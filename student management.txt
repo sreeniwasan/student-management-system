@@ -1,0 +1,275 @@
+import javax.swing.*; import java.awt.*; import java.awt.event.*; import java.io.*;
+
+class second extends JFrame implements ActionListener
+{
+JTextField tf1, tf2, tf3, tf4, tf5; JButton b1, b2, b3;
+JLabel l1, l2, l3, l4, l5, l6, l7, l8; JRadioButton r1, r2, r3, r4; ButtonGroup bg1, bg2;
+String s6; String s7;
+
+public second() { setDefaultCloseOperation(EXIT_ON_CLOSE); setVisible(true);
+setLayout(new BorderLayout());
+
+JLabel f=new JLabel(new ImageIcon("sch3.jpg")); add(f);
+setSize(1550,850); f.setLayout(new FlowLayout()); setTitle("Enroll Student Details");
+
+l8=new JLabel("ENROLL STUDENT DETAILS");
+l8.setForeground(Color.blue); l8.setFont(new Font("",Font.BOLD,22)); l8.setBounds(900, 50, 370, 30); f.add(l8);
+
+l1 = new JLabel("Student Name :"); l1.setForeground(Color.cyan);
+ 
+l1.setFont(new Font("", Font.BOLD, 18)); l1.setBounds(850, 110, 170, 30); f.add(l1);
+
+tf1 = new JTextField(); tf1.setBounds(1100, 110, 170, 30); f.add(tf1);
+l2 = new JLabel("Student Date of Birth :"); l2.setForeground(Color.cyan); l2.setFont(new Font("", Font.BOLD, 18)); l2.setBounds(850, 170, 250, 30);
+f.add(l2);
+
+tf2 = new JTextField(); tf2.setBounds(1100, 170, 170, 30); f.add(tf2);
+
+l3 = new JLabel("Student Age :"); l3.setForeground(Color.cyan); l3.setFont(new Font("", Font.BOLD, 18)); l3.setBounds(850, 230, 170, 30); f.add(l3);
+
+tf3 = new JTextField(); tf3.setBounds(1100, 230, 170, 30); f.add(tf3);
+
+l4 = new JLabel("Student Grade year :"); l4.setForeground(Color.cyan); l4.setFont(new Font("", Font.BOLD, 18)); l4.setBounds(850, 290, 250, 30); f.add(l4);
+
+tf4 = new JTextField(); tf4.setBounds(1100, 290, 170, 30); f.add(tf4);
+
+l5 = new JLabel("Student Mobile number :"); l5.setForeground(Color.cyan); l5.setFont(new Font("", Font.BOLD, 18));
+ 
+l5.setBounds(850, 350, 250, 30); f.add(l5);
+
+tf5 = new JTextField(); tf5.setBounds(1100, 350, 170, 30); f.add(tf5);
+
+l6 = new JLabel("Student Gender :"); l6.setForeground(Color.cyan); l6.setFont(new Font("", Font.BOLD, 18)); l6.setBounds(850, 412, 170, 30); f.add(l6);
+r1 = new JRadioButton("Male"); r1.setBackground(Color.GRAY); r1.setBounds(1100, 410, 170, 30); f.add(r1);
+
+r2 = new JRadioButton("Female"); r2.setBounds(1100, 430, 170, 30); r2.setBackground(Color.GRAY); f.add(r2);
+
+bg1 = new ButtonGroup(); bg1.add(r1);
+bg1.add(r2);
+
+l7 = new JLabel("Resident Status :"); l7.setForeground(Color.cyan); l7.setFont(new Font("", Font.BOLD, 18)); l7.setBounds(850, 472, 170, 30); f.add(l7);
+
+r3 = new JRadioButton("Hosteller"); r3.setBounds(1100, 480, 170, 30); r3.setBackground(Color.GRAY); f.add(r3);
+
+r4 = new JRadioButton("Dayscholar"); r4.setBounds(1100, 500, 170, 30); r4.setBackground(Color.GRAY);
+ 
+f.add(r4);
+
+bg2 = new ButtonGroup(); bg2.add(r3);
+bg2.add(r4);
+
+b1 = new JButton("Submit"); b1.setBounds(850, 580, 100, 50); b1.addActionListener(this); f.add(b1);
+
+b2 = new JButton("Clear"); b2.setBounds(1030, 580, 100, 50); f.add(b2);
+b2.addActionListener(this); b3 = new JButton("Display");
+b3.setBounds(1210, 580, 100, 50);
+b3.addActionListener(this); f.add(b3);
+
+f.setSize(1550, 850); f.setLayout(null); f.setVisible(true);
+
+}
+
+public void actionPerformed(ActionEvent e) { String str= e.getActionCommand();
+
+if(str=="Submit") {
+String s1 = tf1.getText(); String s2 = tf2.getText(); String s3 = tf3.getText(); String s4 = tf4.getText(); String s5 = tf5.getText(); if (r1.isSelected()) {
+s6 = r1.getText();
+}
+ 
+if (r2.isSelected()) { s6 = r2.getText();
+}
+
+if (r3.isSelected()) { s7 = r3.getText();
+}
+
+if (r4.isSelected()) { s7 = r4.getText();
+}
+
+if (s1.equals("") || s2.equals("") || s3.equals("") || s4.equals("") || s5.equals("") || (s6 == null) || (s7 == null)) {
+JFrame f1 = new JFrame(); JOptionPane.showMessageDialog(f1, "Not all fields are filled",
+"Error", JOptionPane.ERROR_MESSAGE);
+}
+else {
+tf1.setText(null); tf2.setText(null); tf3.setText(null); tf4.setText(null); tf5.setText(null); bg1.clearSelection(); bg2.clearSelection(); try {
+FileWriter fw = new FileWriter("Record.txt", true); Student stud = new Student(s1, s2, s3, s4, s5, s6, s7); BufferedWriter buffer = new BufferedWriter(fw); buffer.write(stud.toString());
+buffer.close();
+} catch (Exception ex) {
+System.out.println("Exception during serialization: " + e); System.exit(0);
+}
+}
+}
+
+if(str=="Display"){
+ 
+dispose(); new third();
+}
+if(str=="Clear") { tf1.setText(null); tf2.setText(null); tf3.setText(null); tf4.setText(null); tf5.setText(null); bg1.clearSelection(); bg2.clearSelection();
+}
+}
+}
+
+
+
+
+class Student { String name; String dob; String age; String grdyr; String mobno; String gen; String res;
+
+Student(String a,String b,String c,String d,String e,String f,String g){ this.name=a;
+this.dob=b; this.age=c; this.grdyr=d; this.mobno=e; this.gen=f; this.res=g;
+}
+public String toString(){
+return "Student Name is : " + name +"\nStudent Date of birth is : " + dob
++"\nStdent age is : " + age + "\nStudent Grade year is : " + grdyr +"\nStudent Mobile number is : "+ mobno +"\nStudent Gender is : "+ gen + "\nStudent Residential Status is : "+res + "\n\n";
+ 
+}
+}
+
+class third extends JFrame implements ActionListener {
+
+JTextArea a1; String s1, s2; JButton b1,b2;
+
+public third() { setDefaultCloseOperation(EXIT_ON_CLOSE); setVisible(true);
+setLayout(new BorderLayout());
+
+JLabel f = new JLabel(new ImageIcon("sch6.jpg")); add(f);
+setSize(1550, 850); b1=new JButton("Back");
+b1.setBounds(1100,120,100,50);
+b1.addActionListener(this); f.add(b1);
+
+b2=new JButton("Logout"); b2.setBounds(1100, 200, 100, 50); f.add(b2);
+
+b2.addActionListener(this);
+
+
+a1 = new JTextArea();
+a1.setFont(new Font("Elephant", Font.PLAIN, 18)); a1.setBackground(new Color(204, 255, 225));
+a1.setBounds(280, 120, 800, 500); f.add(a1);
+
+try {
+FileReader fr = new FileReader("Record.txt"); BufferedReader br = new BufferedReader(fr);
+ 
+while ((s1 = br.readLine()) != null) { s2 = br.readLine(); a1.append(s1 + "\n");
+a1.append(s2 + "\n");
+}
+br.close();
+fr.close();
+} catch (Exception e) {
+}
+
+f.setLayout(null); f.setVisible(true);
+}
+
+public void actionPerformed(ActionEvent e) { String str=e.getActionCommand();
+
+if(str=="Back"){ dispose(); new second();
+}
+
+if(str=="Logout"){ dispose();
+}
+}
+
+}
+
+class first extends JFrame implements ActionListener { String s1, s2, s3, s4, s5;
+JTextField tf1, tf2; JPasswordField pf1, pf2, pf3; JButton b1, b2, b3;
+JLabel l1, l2, l3, l4, l5, l6, l7, l8, l9;
+
+public first() { setDefaultCloseOperation(EXIT_ON_CLOSE); setVisible(true);
+setLayout(new BorderLayout());
+ 
+setTitle("Login Page");
+
+JLabel f = new JLabel(new ImageIcon("sch4.gif")); add(f);
+setSize(1550, 850); f.setLayout(new FlowLayout());
+
+l1 = new JLabel("STUDENT MANAGEMENT SYSTEM");
+l1.setBounds(370, 0, 1300, 100);
+l1.setFont(new Font("Showcard Gothic", Font.BOLD, 50)); l1.setForeground(Color.blue);
+add(l1);
+
+l2 = new JLabel("Login Portal"); l2.setBounds(100, 150, 400, 30);
+l2.setFont(new Font("Rockwell", Font.BOLD, 24)); add(l2);
+
+l3 = new JLabel("Username :"); l3.setBounds(0, 250, 400, 30);
+l3.setFont(new Font("Rockwell", Font.PLAIN, 24)); add(l3);
+
+l4 = new JLabel("Password :"); l4.setBounds(0, 330, 400, 30);
+l4.setFont(new Font("Rockwell", Font.PLAIN, 24)); add(l4);
+
+tf1 = new JTextField(); tf1.setBounds(150, 250, 170, 30); add(tf1);
+
+pf1 = new JPasswordField(); pf1.setBounds(150, 330, 170, 30); add(pf1);
+
+b1 = new JButton("Login"); b1.setBounds(100, 450, 75, 35); b1.addActionListener(this); add(b1);
+ 
+b2 = new JButton("Forget Password"); b2.setBounds(185, 360, 130, 15); b2.addActionListener(this);
+add(b2);
+
+l5 = new JLabel("NEW REGISTRATION"); l5.setBounds(1220, 150, 400, 30);
+l5.setFont(new Font("Rockwell", Font.BOLD, 24)); add(l5);
+
+l6 = new JLabel("New Username :"); l6.setBounds(1170, 250, 400, 30);
+l6.setFont(new Font("Rockwell", Font.PLAIN, 24)); add(l6);
+
+tf2 = new JTextField(); tf2.setBounds(1360, 250, 165, 30); add(tf2);
+
+l7 = new JLabel("New Password :"); l7.setBounds(1170, 300, 400, 30);
+l7.setFont(new Font("Rockwell", Font.PLAIN, 24)); add(l7);
+
+pf2 = new JPasswordField(); pf2.setBounds(1360, 300, 165, 30); add(pf2);
+
+l8 = new JLabel("Confirm	:"); l8.setBounds(1190, 350, 400, 30);
+l8.setFont(new Font("Rockwell", Font.PLAIN, 24)); add(l8);
+
+l9 = new JLabel("Password "); l9.setBounds(1180, 380, 400, 30);
+l9.setFont(new Font("Rockwell", Font.PLAIN, 24)); add(l9);
+
+pf3 = new JPasswordField();
+ 
+pf3.setBounds(1360, 360, 165, 30); add(pf3);
+
+b3 = new JButton("Register"); b3.setBounds(1300, 450, 100, 35); add(b3); b3.addActionListener(this);
+
+}
+
+public void actionPerformed(ActionEvent a) { String s;
+s = a.getActionCommand(); s1 = tf1.getText();
+s2 = pf1.getText(); s3 = pf2.getText(); s4 = pf3.getText(); s5 = tf2.getText();
+
+if (s.equals("Login")) {
+
+if (s1.equals("") || s2.equals("")) { JFrame f3 = new JFrame();
+JOptionPane.showMessageDialog(f3, "Not all fields are filled", "Error", JOptionPane.ERROR_MESSAGE);
+}
+
+if (s1.equals("admin") && s2.equals("admin")) { dispose();
+new second();
+} else {
+JFrame f4 = new JFrame(); JOptionPane.showMessageDialog(f4, "Invalid Login", "Error",
+JOptionPane.ERROR_MESSAGE);
+}
+}
+
+
+if(s.equals("Forget Password")){ JFrame f5=new JFrame();
+ 
+JOptionPane.showMessageDialog(f5,"New password has been sent to your Mail","Alert",JOptionPane.INFORMATION_MESSAGE);
+}
+
+
+if (s.equals("Register")) {
+if (s3.equals("") || s4.equals("") || s5.equals("")) { JFrame f4 = new JFrame();
+JOptionPane.showMessageDialog(f4, "Not all fields are filled", "Error", JOptionPane.ERROR_MESSAGE);
+}
+
+if (!s3.equals(s4)) {
+JFrame f5 = new JFrame(); JOptionPane.showMessageDialog(f5, "Password doesn't match",
+"Error", JOptionPane.ERROR_MESSAGE);
+} else {
+dispose(); new second();
+}
+}
+}
+
+public static void main(String[] args) { new first();
+}
+}
